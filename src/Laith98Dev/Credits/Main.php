@@ -54,7 +54,7 @@ class Main extends PluginBase {
 	
 	public static $instance = null;
 	
-	/** @var string[] */
+	/** @var array */
 	public $acceptTransfer = [];
 	
 	/** @var DataManager */
@@ -138,14 +138,18 @@ class Main extends PluginBase {
 		if($player === null)
 			return false;
 		
-		if(isset($this->acceptTransfer[$player->getName()])){
-			$player->sendMessage("Please wait, another transfer process is in progress.");
-			return false;
+		foreach ($this->acceptTransfer as $t){
+			if($t->getPlayer() == null)
+				continue;
+			if($t->getPlayer()->getName() == $player->getName()){
+				$player->sendMessage("Please wait, another transfer process is in progress.");
+				return false;
+			}
 		}
 		
 		$code = $this->generateRandomCode();
 		$task = new TypeTransferCodeTask($this, $player, $to, $count, $reason, $code);
-		$this->acceptTransfer[$player->getName()] = $task;
+		$this->acceptTransfer[] = $task;
 		$this->getScheduler()->scheduleDelayedTask($task, 20 * 15);
 		$player->sendMessage("Type: '" . $code . "' to confirm the transfer.");
 		return true;
