@@ -37,6 +37,10 @@ namespace Laith98Dev\Credits;
 use pocketmine\scheduler\Task;
 use pocketmine\Player;
 
+/**
+ * Class TypeTransferCodeTask
+ * @package Credits
+ */
 class TypeTransferCodeTask extends Task {
 	
 	/** @var Main */
@@ -64,6 +68,26 @@ class TypeTransferCodeTask extends Task {
 		$this->count = $count;
 		$this->reason = $reason;
 		$this->code = $code;
+	}
+	
+	public function getPlayer(){
+		return $this->player;
+	}
+	
+	public function getTo(){
+		return $this->to;
+	}
+	
+	public function getCount(){
+		return $this->count;
+	}
+	
+	public function getReason(){
+		return $this->reason;
+	}
+	
+	public function getCode(){
+		return $this->code;
 	}
 	
 	public function onRun(int $tick){
