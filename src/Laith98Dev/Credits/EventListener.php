@@ -87,7 +87,7 @@ class EventListener implements Listener {
 		if(isset($this->plugin->acceptTransfer[$player->getName()])){
 			$task = $this->plugin->acceptTransfer[$player->getName()];
 			
-			if(is_null($task)){
+			if(!($task instanceof TypeTransferCodeTask)){
 				return;
 			}
 			
