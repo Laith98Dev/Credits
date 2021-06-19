@@ -101,7 +101,7 @@ class TypeTransferCodeTask extends Task {
 			unset($plugin->acceptTransfer[$player->getName()]);
 			$player->sendMessage("transfer cancelled, time ended");
 		} else {
-			$this->plugin->transferCredits($sender, $to, $count, $reason);
+			$this->plugin->transferCredits($player, $to, $count, $reason);
 		}
 		
 		$this->getHandler()->cancel();
