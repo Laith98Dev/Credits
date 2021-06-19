@@ -68,9 +68,9 @@ class Main extends PluginBase {
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "players");
 		
-		foreach ($this->getResources() as $file){
-			$this->saveResources($file);
-		}
+		foreach ($this->getResources() as $resource) {
+            $this->saveResource($resource->getFilename());
+        }
 		
 		$this->dataManager = new DataManager($this);
 		
@@ -95,11 +95,9 @@ class Main extends PluginBase {
 				$p = $server->getPlayerExact($player);
 			}
 		} elseif ($player instanceof Player){
-			if(!is_null($player->getName())){
-				$p = $server->getPlayer($player->getName());
-				if($p == null){
-					$p = $server->getPlayerExact($player->getName());
-				}
+			$p = $server->getPlayer($player->getName());
+			if($p == null){
+				$p = $server->getPlayerExact($player->getName());
 			}
 		}
 		
@@ -160,7 +158,7 @@ class Main extends PluginBase {
 		
 		$now = time();
 		if($this->getLastDaily($player) > $now){
-			$data = $this->getPlayerData($player);
+			$data = $this->getDataManager()->getPlayerData($player);
 			if($data === null || !($data instanceof Config))
 				return false;
 			
