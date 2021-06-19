@@ -84,27 +84,25 @@ class EventListener implements Listener {
 		$player = $event->getPlayer();
 		$msg = $event->getMessage();
 		
-		if(isset($this->plugin->acceptTransfer[$player->getName()])){
-			$task = $this->plugin->acceptTransfer[$player->getName()];
-			
-			if(!($task instanceof TypeTransferCodeTask)){
-				return;
-			}
-			
-			if($msg == $task->getCode()){
-				$to = $task->getTo();
-				$count = $task->getCount();
-				$reason = $task->getReason();
+		foreach ($this->plugin->acceptTransfer as $key => $task){
+			if($task->getPlayer() == null)
+				continue;
+			if($task->getPlayer()->getName() == $player->getName()){
+				if($msg == $task->getCode()){
+					$to = $task->getTo();
+					$count = $task->getCount();
+					$reason = $task->getReason();
+					
+					$this->plugin->transferCredits($player, $to, $count, $reason);
+					$task->getHandler()->cancel();
+					unset($this->plugin->acceptTransfer[$key]);
+				} else {
+					$player->sendMessage("wrong code try again");
+				}
 				
-				$this->plugin->transferCredits($player, $to, $count, $reason);
-				$task->getHandler()->cancel();
-				unset($this->plugin->acceptTransfer[$player->getName()]);
-			} else {
-				$player->sendMessage("wrong code try again");
-				//$task->getHandler()->cancel();
+				$event->setCancelled(true);
+				break;
 			}
-			
-			$event->setCancelled(true);
 		}
 	}
 }
