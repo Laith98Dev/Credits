@@ -97,10 +97,19 @@ class TypeTransferCodeTask extends Task {
 		$count = $this->count;
 		$reason = $this->reason;
 		
-		if(isset($plugin->acceptTransfer[$player->getName()])){
-			unset($plugin->acceptTransfer[$player->getName()]);
-			$player->sendMessage("transfer cancelled, time ended");
-		} else {
+		$give = true;
+		foreach ($plugin->acceptTransfer as $t){
+			if($t->getPlayer() == null)
+				continue;
+			if($t->getPlayer()->getName() == $player->getName()){
+				unset($plugin->acceptTransfer[$player->getName()]);
+				$player->sendMessage("transfer cancelled, time ended");
+				$give = false;
+			}
+		}
+		
+		
+		if($give){
 			$this->plugin->transferCredits($player, $to, $count, $reason);
 		}
 		
