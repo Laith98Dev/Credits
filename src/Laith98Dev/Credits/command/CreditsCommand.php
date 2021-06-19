@@ -123,8 +123,12 @@ class CreditsCommand extends PluginCommand
 			$count = $args[1];
 			
 			$reason = "No reason provided";
-			if(isset($args[2]))
-				$reason = $args[2];
+			if(isset($args[2])){
+				$reason = $args[2] . " ";
+				for ($i = 3; $i <= (count($args) - 1); $i++){
+					$reason .= $args[$i] . " ";
+				}
+			}
 			
 			if($this->plugin->submitTransfer($sender, $to, $count, $reason)){
 				return true;
