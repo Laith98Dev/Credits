@@ -87,7 +87,7 @@ class EventListener implements Listener {
 		if(isset($this->plugin->acceptTransfer[$player->getName()])){
 			$task = $this->plugin->acceptTransfer[$player->getName()];
 			
-			if($msg === $task->getCode()){
+			if($msg == $task->getCode()){
 				$to = $task->getTo();
 				$count = $task->getCount();
 				$reason = $task->getReason();
