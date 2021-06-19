@@ -161,7 +161,7 @@ class Main extends PluginBase {
 			return false;
 		
 		$now = time();
-		if($this->getLastDaily($player) > $now){
+		if($now >= $this->getLastDaily($player)){
 			$data = $this->getDataManager()->getPlayerData($player);
 			if($data === null || !($data instanceof Config))
 				return false;
@@ -179,7 +179,7 @@ class Main extends PluginBase {
 			$m = $left["m"];
 			$s = $left["s"];
 			$player->sendMessage("Cannot claim your daily credits now, Time Left {$h}h {$m}m {$s}s");
-			return false;
+			return true;
 		}
 		
 		//$add = 2000 + (($n = mt_rand(2000, self::MAX_DAILY)) > 2500 ? $n + ($n % 10) : 2500 + mt_rand(0, 500));
