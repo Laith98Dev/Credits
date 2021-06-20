@@ -74,7 +74,7 @@ class Main extends PluginBase {
 			$this->saveResource($resource->getFilename());
 		}
 		
-		$lang = new Config($this->getDataFolder() . "lang.json", Config::JSON);
+		$lang = new Config($this->getDataFolder() . "lang.yml", Config::YAML);
 		if($lang->get("lang.version") !== self::VERSION)
 			$this->updateVersion();
 		
@@ -89,8 +89,8 @@ class Main extends PluginBase {
 	
 	public function updateVersion(){
 		$index = [];
-		$path = $this->getDataFolder() . "lang.json";
-		$lang = new Config($path, Config::JSON);
+		$path = $this->getDataFolder() . "lang.yml";
+		$lang = new Config($path, Config::YAML);
 		
 		foreach ($lang->getAll() as $key => $val){
 			if($key == "lang.version")
@@ -100,7 +100,7 @@ class Main extends PluginBase {
 		
 		@unlink($path);
 		
-		$this->saveResource("lang.json");
+		$this->saveResource("lang.yml");
 		
 		$lang = new Config($path, Config::JSON);
 		foreach ($index as $key => $val){
