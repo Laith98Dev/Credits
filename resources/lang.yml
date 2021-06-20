@@ -6,5 +6,5 @@ cannot.claim.daily: "&cYour daily credits cannot be claimed right now, Time Left
 successful.claimed.daily: "You have claimed {count} credits in your last daily, Time Left {$h}h {$m}m {$s}s"
 not.enough.credits.for.transfer: "&cCan't transfer, you don't have that many credits!"
 successful.transfer.player: "Successful transfer ${count} to {toName}"
-claim.credits: "You have received ${count} from user {from}, , Reason: {reason}"
+claim.credits: "You have received ${count} from user {from}, Reason: {reason}"
 reansfer.time.ended: "&ctransfer cancelled, time ended"
