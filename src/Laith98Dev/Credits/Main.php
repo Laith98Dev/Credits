@@ -136,7 +136,7 @@ class Main extends PluginBase {
 	}
 	
 	public function getMessage(string $msg){
-		$lang = new Config($this->getDataFolder() . "lang.json", Config::JSON);
+		$lang = new Config($this->getDataFolder() . "lang.yml", Config::YAML);
 		return str_replace("&", TF::ESCAPE, $lang->get($msg));
 	}
 	
