@@ -54,8 +54,7 @@ class DataManager {
         foreach (scandir($path) as $file) {
 			if(in_array($file, [".", ".."]))
 				continue;
-            $name = explode(".json", $file);
-			$name = $name[0];
+			$name = str_replace(".json", "", $file);
 			$players[] = $name;
         }
 		
@@ -269,16 +268,16 @@ class DataManager {
 		
 		if($count > $pcredits){
 			if($player !== null)
-				$player->sendMessage("Cannot transfer, you do not have this number of credits!");
+				$player->sendMessage($this->plugin->getMessage("not.enough.credits.for.transfer"));
 			return false;
 		}
 		
 		if($this->reduceCreditsByName($playerName, $count)){
 			if($this->addCreditsByName($toName, $count)){
 				if($player !== null)
-					$player->sendMessage("Successful transfer $" . $count . " to " . $toName);
+					$player->sendMessage(str_replace(["{count}", "{toName}"], [$count, $toName], $this->plugin->getMessage("successful.transfer.player")));
 				if($to !== null)
-					$to->sendMessage("You have received $" . $count . " from user " . $playerName . ", Reason: " . $reason);
+					$to->sendMessage(str_replace(["{count}", "{from}", "{reason}"], [$count, $playerName, $reason], $this->plugin->getMessage("claim.credits")));
 				return true;
 			}
 		}
