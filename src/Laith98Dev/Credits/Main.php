@@ -36,7 +36,7 @@ namespace Laith98Dev\Credits;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use pocketmine\utils\Config;
+use pocketmine\utils\{Config, TextFormat as TF};
 use pocketmine\Player;
 
 use pocketmine\event\player\PlayerJoinEvent;
@@ -51,6 +51,8 @@ use Laith98Dev\Credits\command\DailyCommand;
 class Main extends PluginBase {
 	
 	const MAX_DAILY = 3000;
+	
+	const VERSION = "1.0.0";
 	
 	public static $instance = null;
 	
@@ -69,8 +71,12 @@ class Main extends PluginBase {
 		@mkdir($this->getDataFolder() . "players");
 		
 		foreach ($this->getResources() as $resource) {
-            $this->saveResource($resource->getFilename());
-        }
+			$this->saveResource($resource->getFilename());
+		}
+		
+		$lang = new Config($this->getDataFolder() . "lang.json", Config::JSON);
+		if($lang->get("lang.version") !== self::VERSION)
+			$this->updateVersion();
 		
 		$this->dataManager = new DataManager($this);
 		
@@ -79,6 +85,31 @@ class Main extends PluginBase {
 		$map = $this->getServer()->getCommandMap();
 		$map->register("credits", new CreditsCommand($this));
 		$map->register("daily", new DailyCommand($this));
+	}
+	
+	public function updateVersion(){
+		$index = [];
+		$path = $this->getDataFolder() . "lang.json";
+		$lang = new Config($path, Config::JSON);
+		
+		foreach ($lang->getAll() as $key => $val){
+			if($key == "lang.version")
+				continue;
+			$index[$key] = $val;
+		}
+		
+		@unlink($path);
+		
+		$this->saveResource("lang.json");
+		
+		$lang = new Config($path, Config::JSON);
+		foreach ($index as $key => $val){
+			if($lang->exists($key)){
+				$lang->set($key, $val);
+			}
+		}
+		
+		$lang->save();
 	}
 	
 	public static function getInctance(){
@@ -104,9 +135,9 @@ class Main extends PluginBase {
 		return $p;
 	}
 	
-	public function getConfig_(string $fileName){
-		$file_type = (strpos(".yml", $fileName) ? Config::YAML : (strpos(".json", $fileName) ? Config::JSON : Config::YAML));
-		return new Config($this->getDataFolder() . $fileName, $file_type);
+	public function getMessage(string $msg){
+		$lang = new Config($this->getDataFolder() . "lang.json", Config::JSON);
+		return str_replace("&", TF::ESCAPE, $lang->get($msg));
 	}
 	
 	public function getDataManager(){
@@ -142,7 +173,7 @@ class Main extends PluginBase {
 			if($t->getPlayer() == null)
 				continue;
 			if($t->getPlayer()->getName() == $player->getName()){
-				$player->sendMessage("Please wait, another transfer process is in progress.");
+				$player->sendMessage($this->getMessage("another.transfer.process"));
 				return false;
 			}
 		}
@@ -178,7 +209,7 @@ class Main extends PluginBase {
 			$h = $left["h"];
 			$m = $left["m"];
 			$s = $left["s"];
-			$player->sendMessage("Cannot claim your daily credits now, Time Left {$h}h {$m}m {$s}s");
+			$player->sendMessage(str_replace(["{h}", "{m}", "{s}"], [$h, $m, $s], $this->getMessage("cannot.claim.daily")));
 			return true;
 		}
 		
@@ -192,7 +223,7 @@ class Main extends PluginBase {
 			$h = $left["h"];
 			$m = $left["m"];
 			$s = $left["s"];
-			$player->sendMessage("You have claimed " . $add . " credits in your last daily, Time Left {$h}h {$m}m {$s}s");
+			$player->sendMessage(str_replace(["{h}", "{m}", "{s}", "{count}"], [$h, $m, $s, $add], $this->getMessage("successful.claimed.daily")));
 			return true;
 		}
 		
@@ -200,9 +231,6 @@ class Main extends PluginBase {
 	}
 	
 	public function generateRandomCode(){
-		//$az = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "Y", "V", "W", "X", "Y", "Z"];
-		//$num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-		
 		$chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
 		srand((double)microtime() * 1000000); 
 		$i = 0; 
