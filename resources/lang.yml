@@ -1,10 +1,38 @@
+---
 
+# lang version don't change it.
 lang.version: "1.0.0"
 
+# When player try transfer credits and another transfer process is in progress.
 another.transfer.process: "&cPlease wait, another transfer process is in progress."
-cannot.claim.daily: "&cYour daily credits cannot be claimed right now, Time Left {$h}h {$m}m {$s}s"
-successful.claimed.daily: "You have claimed {count} credits in your last daily, Time Left {$h}h {$m}m {$s}s"
+
+# When a player tries to receive his daily reward before the time ended.
+# {h} => remaining hours
+# {m} => the remaining minutes
+# {s} => remaining seconds
+cannot.claim.daily: "&cYour daily credits cannot be claimed right now, Time Left {h}h {m}m {s}s"
+
+# When the player receives the daily bonus.
+# {h} => remaining hours
+# {m} => the remaining minutes
+# {s} => remaining seconds
+# {count} => number of credits
+successful.claimed.daily: "You have claimed {count} credits in your last daily, Time Left {h}h {m}m {s}s"
+
+# When a player tries to transfer credits and he does not have that many credits.
 not.enough.credits.for.transfer: "&cCan't transfer, you don't have that many credits!"
+
+# when successful transfer of credits, The message will be sent to the sender.
+# {count} => Amount sent
+# {toName} => The recipient's name
 successful.transfer.player: "Successful transfer ${count} to {toName}"
+
+# Upon receipt of credits
+# {count} => Amount sent
+# {from} => The sender name
+# {reason} => Reason for sending
 claim.credits: "You have received ${count} from user {from}, Reason: {reason}"
+
+# When the time specified for confirmation of transfer expires
 reansfer.time.ended: "&ctransfer cancelled, time ended"
+...
