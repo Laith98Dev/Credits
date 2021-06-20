@@ -36,7 +36,7 @@ namespace Laith98Dev\Credits;
 
 use pocketmine\event\Listener;
 
-use pocketmine\utils\Config;
+use pocketmine\utils\{Config, TextFormat as TF};
 use pocketmine\Player;
 
 use pocketmine\event\player\PlayerJoinEvent;
@@ -97,7 +97,7 @@ class EventListener implements Listener {
 					$task->getHandler()->cancel();
 					unset($this->plugin->acceptTransfer[$key]);
 				} else {
-					$player->sendMessage("wrong code try again");
+					$player->sendMessage(TF::RED . "wrong code try again");
 				}
 				
 				$event->setCancelled(true);
