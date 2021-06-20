@@ -112,7 +112,7 @@ class Main extends PluginBase {
 		$lang->save();
 	}
 	
-	public static function getInctance(){
+	public static function getInstance(){
 		return self::$instance;
 	}
 	
