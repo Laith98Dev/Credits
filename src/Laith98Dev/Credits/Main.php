@@ -102,7 +102,7 @@ class Main extends PluginBase {
 		
 		$this->saveResource("lang.yml");
 		
-		$lang = new Config($path, Config::JSON);
+		$lang = new Config($path, Config::YAML);
 		foreach ($index as $key => $val){
 			if($lang->exists($key)){
 				$lang->set($key, $val);
