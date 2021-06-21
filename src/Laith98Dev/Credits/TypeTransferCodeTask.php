@@ -103,7 +103,7 @@ class TypeTransferCodeTask extends Task {
 				continue;
 			if($t->getPlayer()->getName() == $player->getName()){
 				unset($plugin->acceptTransfer[$player->getName()]);
-				$player->sendMessage($plugin->getMessage("reansfer.time.ended"));
+				$player->sendMessage($plugin->getMessage("transfer.time.ended"));
 				$give = false;
 			}
 		}
