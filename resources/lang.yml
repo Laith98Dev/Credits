@@ -34,5 +34,5 @@ successful.transfer.player: "Successful transfer ${count} to {toName}"
 claim.credits: "You have received ${count} from user {from}, Reason: {reason}"
 
 # When the time specified for confirmation of transfer expires
-reansfer.time.ended: "&ctransfer cancelled, time ended"
+transfer.time.ended: "&ctransfer cancelled, time ended"
 ...
