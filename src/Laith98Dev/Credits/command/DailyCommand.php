@@ -12,8 +12,8 @@ namespace Laith98Dev\Credits\command;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *  Copyright (C) 2021 Laith98Dev
- *  
+ *	Copyright (C) 2021 Laith98Dev
+ *	
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
  *	Gihhub: Laith98Dev
@@ -57,10 +57,6 @@ class DailyCommand extends PluginCommand
 		$this->setAliases(["d"]);
 	}
 	
-	public function hasPermission(Player $player, string $perm): bool{
-		return $player->hasPermission("credits.command." . $perm);
-	}
-	
 	public function getDataManager(){
 		return $this->plugin->getDataManager();
 	}
@@ -75,6 +71,6 @@ class DailyCommand extends PluginCommand
 			return true;
 		}
 		
-		return true;
+		return false;
 	}
 }
