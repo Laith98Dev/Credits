@@ -12,8 +12,8 @@ namespace Laith98Dev\Credits\command;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *  Copyright (C) 2021 Laith98Dev
- *  
+ *	Copyright (C) 2021 Laith98Dev
+ *	
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
  *	Gihhub: Laith98Dev
@@ -55,10 +55,6 @@ class CreditsCommand extends PluginCommand
 		$this->plugin = $plugin;
 		$this->setDescription("Credits Command");
 		$this->setAliases(["c"]);
-	}
-	
-	public function hasPermission(Player $player, string $perm): bool{
-		return $player->hasPermission("credits.command." . $perm);
 	}
 	
 	public function getDataManager(){
@@ -115,7 +111,7 @@ class CreditsCommand extends PluginCommand
 		}
 		
 		if(isset($args[1])){
-			if(!is_numeric($args[1]) && !strpos(".", $args[1])){
+			if(!is_numeric($args[1]) || strpos(".", $args[1])){
 				$sender->sendMessage("transfer count must be intger!");
 				return false;
 			}
@@ -135,6 +131,6 @@ class CreditsCommand extends PluginCommand
 			}
 		}
 		
-		return true;
+		return false;
 	}
 }
