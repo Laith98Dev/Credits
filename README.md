@@ -5,12 +5,13 @@
 Command | Description | Aliases
 --- | --- | ---
 `/credits` | `To see your credits` | `/c`
-`/credits <PlayerName>` | `To see the credits of a specific person` | `/c <PlayerName`
+`/credits <PlayerName>` | `To see the credits of a specific person` | `/c <PlayerName>`
 `/credits <PlayerName> <Count> <Reason>` | `Transfer credits to someone` | `/c <PlayerName> <Count> <Reason>`
 `/daily` | `To get your daily reward` | `/d`
 
 # API
 
+- use Laith98Dev\Credits\Main;
 - $api = Main::getInstance();
 - $api->getCredits(Player); // to get player credits
 - $api->addCredits(Player, $count); // to add credits
