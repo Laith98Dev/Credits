@@ -12,7 +12,7 @@ namespace Laith98Dev\Credits;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- * 	Copyright (C) 2021 Laith98Dev
+ *  Copyright (C) 2021 Laith98Dev
  *  
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
@@ -100,7 +100,8 @@ class TypeTransferCodeTask extends Task {
 		if($this->isCanceled())
 			return;
 		
-		$this->getHandler()->cancel();
+		if($this->getHandler() !== null)
+			$this->getHandler()->cancel();
 	}
 	
 	public function onRun(int $tick){
@@ -116,7 +117,7 @@ class TypeTransferCodeTask extends Task {
 				continue;
 			if($t->getPlayer()->getName() == $player->getName()){
 				unset($plugin->acceptTransfer[$player->getName()]);
-				$player->sendMessage($plugin->getMessage("reansfer.time.ended"));
+				$player->sendMessage($plugin->getMessage("transfer.time.ended"));
 				$give = false;
 			}
 		}
