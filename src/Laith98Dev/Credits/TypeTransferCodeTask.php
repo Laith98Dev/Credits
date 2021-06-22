@@ -92,16 +92,22 @@ class TypeTransferCodeTask extends Task {
 		return $this->code;
 	}
 	
-	public function isCanceled(){
+	public function isCancelled(){
 		return $this->cancel;
 	}
 	
+	public function setCancelled(bool $val){
+		$this->cancel = $val;
+	}
+	
 	public function cancelTask(){
-		if($this->isCanceled())
+		if($this->isCancelled())
 			return;
 		
 		if($this->getHandler() !== null)
 			$this->getHandler()->cancel();
+		
+		$this->setCancelled(true);
 	}
 	
 	public function onRun(int $tick){
@@ -123,7 +129,7 @@ class TypeTransferCodeTask extends Task {
 		}
 		
 		
-		if($give && !$this->isCanceled()){
+		if($give && !$this->isCancelled()){
 			$this->plugin->transferCredits($player, $to, $count, $reason);
 		}
 		
