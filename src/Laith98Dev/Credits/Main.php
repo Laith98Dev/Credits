@@ -12,7 +12,7 @@ namespace Laith98Dev\Credits;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *  Copyright (C) 2021 Laith98Dev
+ *	Copyright (C) 2021 Laith98Dev
  *  
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
@@ -88,28 +88,11 @@ class Main extends PluginBase {
 	}
 	
 	public function updateVersion(){
-		$index = [];
 		$path = $this->getDataFolder() . "lang.yml";
-		$lang = new Config($path, Config::YAML);
-		
-		foreach ($lang->getAll() as $key => $val){
-			if($key == "lang.version")
-				continue;
-			$index[$key] = $val;
-		}
 		
 		@unlink($path);
 		
 		$this->saveResource("lang.yml");
-		
-		$lang = new Config($path, Config::YAML);
-		foreach ($index as $key => $val){
-			if($lang->exists($key)){
-				$lang->set($key, $val);
-			}
-		}
-		
-		$lang->save();
 	}
 	
 	public static function getInstance(){
