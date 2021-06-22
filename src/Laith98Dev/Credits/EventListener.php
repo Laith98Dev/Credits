@@ -34,78 +34,99 @@ namespace Laith98Dev\Credits;
  * 	
  */
 
-use pocketmine\event\Listener;
-
-use pocketmine\utils\{Config, TextFormat as TF};
+use pocketmine\scheduler\Task;
 use pocketmine\Player;
 
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerChatEvent;
-
 /**
- * Class EventListener
+ * Class TypeTransferCodeTask
  * @package Credits
  */
-class EventListener implements Listener {
+class TypeTransferCodeTask extends Task {
 	
 	/** @var Main */
 	private $plugin;
 	
-	public function __construct(Main $plugin){
+	/** @var Player */
+	public $player;
+	
+	/** @var string */
+	public $to;
+	
+	/** @var int */
+	public $count;
+	
+	/** @var string */
+	public $reason;
+	
+	/** @var string */
+	public $code;
+	
+	public $cancel = false;
+	
+	public function __construct(Main $plugin, Player $player, string $to, int $count, string $reason, string $code){
 		$this->plugin = $plugin;
+		$this->player = $player;
+		$this->to = $to;
+		$this->count = $count;
+		$this->reason = $reason;
+		$this->code = $code;
 	}
 	
-	public function getDataManager(){
-		return $this->plugin->getDataManager();
+	public function getPlayer(){
+		return $this->player;
 	}
 	
-	public function onJoin(PlayerJoinEvent $event){
-		$pp = $event->getPlayer();
-		$player = $this->plugin->getPlayer($pp);
-		
-		if($player === null || !($player instanceof Player))
-			return false;
-		
-		if($this->getDataManager()->checkData($player)){
-			$data = $this->getDataManager()->getPlayerData($player);
-			$lastdaily = $data->get("lastdaily");
-			$now = time();
-			
-			if($lastdaily !== 0){
-				if($now >= $lastdaily){
-					$data->set("lastdaily", 0);
-					$data->save();
-				}
-			}
-		}
+	public function getTo(){
+		return $this->to;
 	}
 	
-	public function onChat(PlayerChatEvent $event){
-		$player = $event->getPlayer();
-		$msg = $event->getMessage();
+	public function getCount(){
+		return $this->count;
+	}
+	
+	public function getReason(){
+		return $this->reason;
+	}
+	
+	public function getCode(){
+		return $this->code;
+	}
+	
+	public function isCanceled(){
+		return $this->cancel;
+	}
+	
+	public function cancelTask(){
+		if($this->isCanceled())
+			return;
 		
-		foreach ($this->plugin->acceptTransfer as $key => $task){
-			if($task->getPlayer() == null)
+		if($this->getHandler() !== null)
+			$this->getHandler()->cancel();
+	}
+	
+	public function onRun(int $tick){
+		$plugin = $this->plugin;
+		$player = $this->player;
+		$to = $this->to;
+		$count = $this->count;
+		$reason = $this->reason;
+		
+		$give = true;
+		foreach ($plugin->acceptTransfer as $t){
+			if($t->getPlayer() == null)
 				continue;
-			if($task->getPlayer()->getName() == $player->getName()){
-				if($msg == $task->getCode()){
-					$to = $task->getTo();
-					$count = $task->getCount();
-					$reason = $task->getReason();
-					
-					if(!$task->isCanceled()){
-						$this->plugin->transferCredits($player, $to, $count, $reason);
-						$task->cancelTask();
-					}
-					
-					unset($this->plugin->acceptTransfer[$key]);
-				} else {
-					$player->sendMessage(TF::RED . "wrong code try again");
-				}
-				
-				$event->setCancelled(true);
-				break;
+			if($t->getPlayer()->getName() == $player->getName()){
+				unset($plugin->acceptTransfer[$player->getName()]);
+				$player->sendMessage($plugin->getMessage("transfer.time.ended"));
+				$give = false;
 			}
 		}
+		
+		
+		if($give && !$this->isCanceled()){
+			$this->plugin->transferCredits($player, $to, $count, $reason);
+		}
+		
+		$this->cancelTask();
 	}
 }
