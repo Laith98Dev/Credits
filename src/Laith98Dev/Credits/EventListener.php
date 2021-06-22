@@ -93,7 +93,7 @@ class EventListener implements Listener {
 					$count = $task->getCount();
 					$reason = $task->getReason();
 					
-					if(!$task->isCanceled()){
+					if(!$task->isCancelled()){
 						$this->plugin->transferCredits($player, $to, $count, $reason);
 						$task->cancelTask();
 					}
