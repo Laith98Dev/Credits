@@ -12,7 +12,7 @@ namespace Laith98Dev\Credits;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *  Copyright (C) 2021 Laith98Dev
+ * 	Copyright (C) 2021 Laith98Dev
  *  
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
@@ -61,6 +61,8 @@ class TypeTransferCodeTask extends Task {
 	/** @var string */
 	public $code;
 	
+	public $cancel = false;
+	
 	public function __construct(Main $plugin, Player $player, string $to, int $count, string $reason, string $code){
 		$this->plugin = $plugin;
 		$this->player = $player;
@@ -90,6 +92,17 @@ class TypeTransferCodeTask extends Task {
 		return $this->code;
 	}
 	
+	public function isCanceled(){
+		return $this->cancel;
+	}
+	
+	public function cancelTask(){
+		if($this->isCanceled())
+			return;
+		
+		$this->getHandler()->cancel();
+	}
+	
 	public function onRun(int $tick){
 		$plugin = $this->plugin;
 		$player = $this->player;
@@ -103,16 +116,16 @@ class TypeTransferCodeTask extends Task {
 				continue;
 			if($t->getPlayer()->getName() == $player->getName()){
 				unset($plugin->acceptTransfer[$player->getName()]);
-				$player->sendMessage($plugin->getMessage("transfer.time.ended"));
+				$player->sendMessage($plugin->getMessage("reansfer.time.ended"));
 				$give = false;
 			}
 		}
 		
 		
-		if($give){
+		if($give && !$this->isCanceled()){
 			$this->plugin->transferCredits($player, $to, $count, $reason);
 		}
 		
-		$this->getHandler()->cancel();
+		$this->cancelTask();
 	}
 }
