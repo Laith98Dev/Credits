@@ -12,7 +12,7 @@ namespace Laith98Dev\Credits;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *  Copyright (C) 2021 Laith98Dev
+ *  	Copyright (C) 2021 Laith98Dev
  *  
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
@@ -93,8 +93,11 @@ class EventListener implements Listener {
 					$count = $task->getCount();
 					$reason = $task->getReason();
 					
-					$this->plugin->transferCredits($player, $to, $count, $reason);
-					$task->getHandler()->cancel();
+					if(!$task->isCanceled()){
+						$this->plugin->transferCredits($player, $to, $count, $reason);
+						$task->cancelTask();
+					}
+					
 					unset($this->plugin->acceptTransfer[$key]);
 				} else {
 					$player->sendMessage(TF::RED . "wrong code try again");
