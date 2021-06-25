@@ -70,9 +70,7 @@ class Main extends PluginBase {
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "players");
 		
-		foreach ($this->getResources() as $resource) {
-			$this->saveResource($resource->getFilename());
-		}
+		$this->saveResource("lang.yml");
 		
 		$lang = new Config($this->getDataFolder() . "lang.yml", Config::YAML);
 		if($lang->get("lang.version") !== self::VERSION)
@@ -83,8 +81,8 @@ class Main extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		
 		$map = $this->getServer()->getCommandMap();
-		$map->register("credits", new CreditsCommand($this));
-		$map->register("daily", new DailyCommand($this));
+		$map->register($this->getName(), new CreditsCommand($this));
+		$map->register($this->getName(), new DailyCommand($this));
 	}
 	
 	public function updateVersion(){
