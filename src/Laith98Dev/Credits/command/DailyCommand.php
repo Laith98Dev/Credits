@@ -67,7 +67,11 @@ class DailyCommand extends PluginCommand
 			return false;
 		}
 		
-		if($this->plugin->cliamDaily($sender)){
+		$player = $this->plugin->getPlayer($sender);
+		if($player === null)
+			return false;
+		
+		if($this->plugin->cliamDaily($player)){
 			return true;
 		}
 		
