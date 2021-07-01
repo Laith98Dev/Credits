@@ -87,10 +87,11 @@ class CreditsCommand extends PluginCommand
 			return false;
 		}
 		
+		$player = $this->plugin->getPlayer($sender);
+		if($player === null)
+			return false;
+		
 		if(!isset($args[0])){
-			$player = $this->plugin->getPlayer($sender);
-			if($player === null)
-				return false;
 			$c = $this->plugin->getCredits($player);
 			$player->sendMessage("Hey " . $sender->getName() . ", your account balance is $" . $c . ".");
 			return true;
@@ -99,20 +100,20 @@ class CreditsCommand extends PluginCommand
 		$to = $this->getPlayerByName($args[0]);
 		
 		$data = $this->getDataManager()->getPlayerDataByName($to);
+		if($data == null){
+			$player->sendMessage("Player not found!");
+			return false;
+		}
+		
 		if(!isset($args[1])){
-			if($data !== null){
-				$c = $data->get("credits");
-				$sender->sendMessage($to . " balance is $" . $c . ".");
-				return true;
-			} else {
-				$sender->sendMessage("Player not found!");
-				return false;
-			}
+			$c = $data->get("credits");
+			$player->sendMessage($to . " balance is $" . $c . ".");
+			return true;
 		}
 		
 		if(isset($args[1])){
 			if(!is_numeric($args[1]) || strpos(".", $args[1])){
-				$sender->sendMessage("transfer count must be intger!");
+				$player->sendMessage("transfer count must be intger!");
 				return false;
 			}
 			
@@ -126,7 +127,7 @@ class CreditsCommand extends PluginCommand
 				}
 			}
 			
-			if($this->plugin->submitTransfer($sender, $to, $count, $reason)){
+			if($this->plugin->submitTransfer($player, $to, $count, $reason)){
 				return true;
 			}
 		}
