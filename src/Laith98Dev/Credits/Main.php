@@ -37,7 +37,7 @@ namespace Laith98Dev\Credits;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\utils\{Config, TextFormat as TF};
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use pocketmine\event\player\PlayerJoinEvent;
 
@@ -62,11 +62,11 @@ class Main extends PluginBase {
 	/** @var DataManager */
 	private $dataManager;
 	
-	public function onLoad(){
+	public function onLoad(): void{
 		self::$instance = $this;
 	}
 	
-	public function onEnable(){
+	public function onEnable(): void{
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "players");
 		
@@ -81,8 +81,15 @@ class Main extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		
 		$map = $this->getServer()->getCommandMap();
-		$map->register($this->getName(), new CreditsCommand($this));
-		$map->register($this->getName(), new DailyCommand($this));
+		
+		$cc = new CreditsCommand("credits", "Credits Command", null, ["c"]);
+		$cc->init($this);
+		
+		$dc = new DailyCommand("daily", "Daily Command", null, ["d"]);
+		$dc->init($this);
+		
+		$map->register($this->getName(), $cc);
+		$map->register($this->getName(), $dc);
 	}
 	
 	public function updateVersion(){
@@ -102,12 +109,12 @@ class Main extends PluginBase {
 		$p = null;
 		
 		if(is_string($player)){
-			$p = $server->getPlayer($player);
+			$p = $server->getPlayerByPrefix($player);
 			if($p == null){
 				$p = $server->getPlayerExact($player);
 			}
 		} elseif ($player instanceof Player){
-			$p = $server->getPlayer($player->getName());
+			$p = $server->getPlayerByPrefix($player->getName());
 			if($p == null){
 				$p = $server->getPlayerExact($player->getName());
 			}
