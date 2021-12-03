@@ -36,8 +36,11 @@ namespace Laith98Dev\Credits\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
+use pocketmine\command\Command;
+use pocketmine\plugin\PluginOwned;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat as TF;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use Laith98Dev\Credits\Main;
 
@@ -45,17 +48,25 @@ use Laith98Dev\Credits\Main;
  * Class DailyCommand
  * @package Credits\command
  */
-class DailyCommand extends PluginCommand
+final class DailyCommand extends Command implements PluginOwned
 {
 	/** @var Main */
-	private $plugin;
+	private Main $plugin;
 	
-	public function __construct(Main $plugin){
+	public function init(Main $plugin) : void{
+		$this->plugin = $plugin;
+	}
+	
+	public function getOwningPlugin() : Plugin{
+		return $this->plugin;
+	}
+	
+	/* public function __construct(Main $plugin){
 		parent::__construct("daily", $plugin);
 		$this->plugin = $plugin;
 		$this->setDescription("Daily Command");
 		$this->setAliases(["d"]);
-	}
+	} */
 	
 	public function getDataManager(){
 		return $this->plugin->getDataManager();
@@ -67,11 +78,7 @@ class DailyCommand extends PluginCommand
 			return false;
 		}
 		
-		$player = $this->plugin->getPlayer($sender);
-		if($player === null)
-			return false;
-		
-		if($this->plugin->cliamDaily($player)){
+		if($this->plugin->cliamDaily($sender)){
 			return true;
 		}
 		
