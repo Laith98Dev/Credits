@@ -35,7 +35,7 @@ namespace Laith98Dev\Credits;
  */
 
 use pocketmine\scheduler\Task;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class TypeTransferCodeTask
