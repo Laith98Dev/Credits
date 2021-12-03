@@ -34,7 +34,7 @@ namespace Laith98Dev\Credits;
  * 	
  */
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 
 class DataManager {
