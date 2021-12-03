@@ -98,6 +98,9 @@ final class CreditsCommand extends Command implements PluginOwned
 			return false;
 		}
 		
+		if(!is_array($args))
+			return false;
+		
 		if(!isset($args[0])){
 			$player = $this->plugin->getPlayer($sender);
 			if($player === null)
@@ -108,6 +111,9 @@ final class CreditsCommand extends Command implements PluginOwned
 		}
 		
 		$to = $this->getPlayerByName($args[0]);
+		
+		if($to === null)
+			return false;
 		
 		$data = $this->getDataManager()->getPlayerDataByName($to);
 		if(!isset($args[1])){
