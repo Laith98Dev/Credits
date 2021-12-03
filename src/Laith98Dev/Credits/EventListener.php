@@ -37,7 +37,7 @@ namespace Laith98Dev\Credits;
 use pocketmine\event\Listener;
 
 use pocketmine\utils\{Config, TextFormat as TF};
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerChatEvent;
