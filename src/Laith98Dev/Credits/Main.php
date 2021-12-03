@@ -52,7 +52,7 @@ class Main extends PluginBase {
 	
 	const MAX_DAILY = 3000;
 	
-	const VERSION = "1.0.0";
+	const VERSION = "1.0.1";
 	
 	public static $instance = null;
 	
