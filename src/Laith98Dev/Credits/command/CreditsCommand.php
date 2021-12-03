@@ -121,6 +121,9 @@ final class CreditsCommand extends Command implements PluginOwned
 			}
 		}
 		
+		if($args[1] === null)
+			return false;
+		
 		if(isset($args[1])){
 			if(!is_numeric($args[1]) || strpos(".", $args[1])){
 				$sender->sendMessage("transfer count must be intger!");
