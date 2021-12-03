@@ -110,7 +110,7 @@ class TypeTransferCodeTask extends Task {
 		$this->setCancelled(true);
 	}
 	
-	public function onRun(int $tick){
+	public function onRun(int $tick): void{
 		$plugin = $this->plugin;
 		$player = $this->player;
 		$to = $this->to;
