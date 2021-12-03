@@ -36,8 +36,11 @@ namespace Laith98Dev\Credits\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
+use pocketmine\command\Command;
+use pocketmine\plugin\PluginOwned;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat as TF;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 use Laith98Dev\Credits\Main;
 
@@ -45,17 +48,25 @@ use Laith98Dev\Credits\Main;
  * Class CreditsCommand
  * @package Credits\command
  */
-class CreditsCommand extends PluginCommand
+final class CreditsCommand extends Command implements PluginOwned
 {
 	/** @var Main */
-	private $plugin;
+	private Main $plugin;
 	
-	public function __construct(Main $plugin){
+	public function init(Main $plugin) : void{
+		$this->plugin = $plugin;
+	}
+	
+	public function getOwningPlugin() : Plugin{
+		return $this->plugin;
+	}
+	
+	/* public function __construct(Main $plugin){
 		parent::__construct("credits", $plugin);
 		$this->plugin = $plugin;
 		$this->setDescription("Credits Command");
 		$this->setAliases(["c"]);
-	}
+	} */
 	
 	public function getDataManager(){
 		return $this->plugin->getDataManager();
@@ -87,11 +98,10 @@ class CreditsCommand extends PluginCommand
 			return false;
 		}
 		
-		$player = $this->plugin->getPlayer($sender);
-		if($player === null)
-			return false;
-		
 		if(!isset($args[0])){
+			$player = $this->plugin->getPlayer($sender);
+			if($player === null)
+				return false;
 			$c = $this->plugin->getCredits($player);
 			$player->sendMessage("Hey " . $sender->getName() . ", your account balance is $" . $c . ".");
 			return true;
@@ -100,20 +110,20 @@ class CreditsCommand extends PluginCommand
 		$to = $this->getPlayerByName($args[0]);
 		
 		$data = $this->getDataManager()->getPlayerDataByName($to);
-		if($data == null){
-			$player->sendMessage("Player not found!");
-			return false;
-		}
-		
 		if(!isset($args[1])){
-			$c = $data->get("credits");
-			$player->sendMessage($to . " balance is $" . $c . ".");
-			return true;
+			if($data !== null){
+				$c = $data->get("credits");
+				$sender->sendMessage($to . " balance is $" . $c . ".");
+				return true;
+			} else {
+				$sender->sendMessage("Player not found!");
+				return false;
+			}
 		}
 		
 		if(isset($args[1])){
 			if(!is_numeric($args[1]) || strpos(".", $args[1])){
-				$player->sendMessage("transfer count must be intger!");
+				$sender->sendMessage("transfer count must be intger!");
 				return false;
 			}
 			
@@ -127,7 +137,7 @@ class CreditsCommand extends PluginCommand
 				}
 			}
 			
-			if($this->plugin->submitTransfer($player, $to, $count, $reason)){
+			if($this->plugin->submitTransfer($sender, $to, $count, $reason)){
 				return true;
 			}
 		}
