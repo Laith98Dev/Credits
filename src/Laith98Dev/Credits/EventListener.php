@@ -103,7 +103,8 @@ class EventListener implements Listener {
 					$player->sendMessage(TF::RED . "wrong code try again");
 				}
 				
-				$event->setCancelled(true);
+				//$event->setCancelled(true);
+				$event->cancel();
 				break;
 			}
 		}
