@@ -1,6 +1,6 @@
 name: Credits
 api: [4.0.0]
-version: 1.0.0
+version: 1.0.1
 main: Laith98Dev\Credits\Main
 description: credits plugin like discord probot.
 author: Laith98Dev
