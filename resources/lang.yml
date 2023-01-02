@@ -3,7 +3,7 @@
 # lang version don't change it.
 lang.version: "1.0.0"
 
-# When player try transfer credits and another transfer process is in progress.
+# When the player tries to transfer credits and another player tries the to transfer and the process is in progress.
 another.transfer.process: "&cPlease wait, another transfer process is in progress."
 
 # When a player tries to receive his daily reward before the time ended.
